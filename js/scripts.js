@@ -11,14 +11,32 @@ function Address(street, city, state) {
   this.state = state;
 }
 
+function resetFields() {
+  $("input#new-first-name").val("");
+  $("input#new-last-name").val("");
+  $("input.address-type").val("");
+  $("input.new-street").val("");
+  $("input.new-city").val("");
+  $("input.new-state").val("");
+  $("div.extra-fields").remove();
+}
+
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
+}
+
+Address.prototype.fullAddress = function() {
+  return this.street + ", " + this.city + ", " + this.state;
 }
 
 //User Interface Logic
 $(document).ready(function(){
   $("#add-address").click(function() {
-    $("#new-addresses").append('<div class="new-address">' +
+    $("#new-addresses").append('<div class="new-address extra-fields">' +
+    '<div class="form-group">' +
+    '<label for="address-type">Address Type</label>' +
+    '<input type="text" class="form-control address-type" value="">' +
+    '</div>' +
     '<div class="form-group">' +
     '<label for="new-street">Street</label>' +
     '<input type="text" class="form-control new-street">' +
@@ -58,13 +76,9 @@ $(document).ready(function(){
       $(".last-name").text(newContact.lastName)
       $("ul#addresses").text("");
       newContact.addresses.forEach(function(address) {
-        $("ul#addresses").append("<li>" + address.street + ", " + address.city + " " + address.state + "</li>");
+        $("ul#addresses").append("<li><p>Address Type:</p> " + address.fullAddress() + "</li>");
       });
     });
-    $("input#new-first-name").val("");
-    $("input#new-last-name").val("");
-    $("input.new-street").val("");
-    $("input.new-city").val("");
-    $("input.new-state").val("");
+    resetFields();
   });
 });
